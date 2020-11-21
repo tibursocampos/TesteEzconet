@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -18,13 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TesteEzconet.Persistence\TesteEzconet.Persistence.csproj" />
-    <ProjectReference Include="..\TesteEzconet.Service\TesteEzconet.Service.csproj" />
+    <ProjectReference Include="..\TesteEzconet.Domain\TesteEzconet.Domain.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 
 </Project>
