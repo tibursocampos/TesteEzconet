@@ -32,9 +32,9 @@ namespace TesteEzconet.Persistence
                 .HasKey(t => t.SexoId);
 
             modelBuilder.Entity<Usuario>()
-                .HasOne(u => u.SexoUsuario)
-                .WithOne(u => u.User)
-                .HasForeignKey<Sexo>(s => s.SexoId);
+                .HasOne(u => u.Sexos)
+                .WithMany(m => m.Usuarios)
+                .HasForeignKey(s => s.SexoId);
 
             modelBuilder.Entity<Usuario>()
                 .Property(t => t.Nome)
@@ -53,6 +53,7 @@ namespace TesteEzconet.Persistence
 
             modelBuilder.Entity<Usuario>()
                 .Property(t => t.UsuarioId)
+                .ValueGeneratedOnAdd()
                 .IsRequired();
 
             modelBuilder.Entity<Usuario>()
@@ -70,6 +71,10 @@ namespace TesteEzconet.Persistence
             modelBuilder.Entity<Sexo>()
                 .Property(t => t.Descricao)
                 .HasMaxLength(15);
+
+            modelBuilder.Entity<Sexo>()
+                .Property(s => s.SexoId)
+                .ValueGeneratedOnAdd();
 
 
 

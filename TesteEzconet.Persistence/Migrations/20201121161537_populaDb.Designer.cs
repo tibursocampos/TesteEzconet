@@ -10,8 +10,8 @@ using TesteEzconet.Persistence;
 namespace TesteEzconet.Persistence.Migrations
 {
     [DbContext(typeof(TesteEzconetContext))]
-    [Migration("20201121014533_CamposObrigatorios")]
-    partial class CamposObrigatorios
+    [Migration("20201121161537_populaDb")]
+    partial class populaDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,9 @@ namespace TesteEzconet.Persistence.Migrations
             modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
                 {
                     b.Property<int>("SexoId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(15)
@@ -68,23 +70,25 @@ namespace TesteEzconet.Persistence.Migrations
 
                     b.HasKey("UsuarioId");
 
+                    b.HasIndex("SexoId");
+
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
-                {
-                    b.HasOne("TesteEzconet.Domain.Models.Usuario", "User")
-                        .WithOne("SexoUsuario")
-                        .HasForeignKey("TesteEzconet.Domain.Models.Sexo", "SexoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TesteEzconet.Domain.Models.Usuario", b =>
                 {
-                    b.Navigation("SexoUsuario");
+                    b.HasOne("TesteEzconet.Domain.Models.Sexo", "Sexos")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("SexoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sexos");
+                });
+
+            modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

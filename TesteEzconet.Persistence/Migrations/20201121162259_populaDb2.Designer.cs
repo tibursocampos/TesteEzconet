@@ -10,8 +10,8 @@ using TesteEzconet.Persistence;
 namespace TesteEzconet.Persistence.Migrations
 {
     [DbContext(typeof(TesteEzconetContext))]
-    [Migration("20201121013621_CriandoBanco")]
-    partial class CriandoBanco
+    [Migration("20201121162259_populaDb2")]
+    partial class populaDb2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,9 @@ namespace TesteEzconet.Persistence.Migrations
             modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
                 {
                     b.Property<int>("SexoId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(15)
@@ -49,14 +51,17 @@ namespace TesteEzconet.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Senha")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -65,23 +70,25 @@ namespace TesteEzconet.Persistence.Migrations
 
                     b.HasKey("UsuarioId");
 
+                    b.HasIndex("SexoId");
+
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
-                {
-                    b.HasOne("TesteEzconet.Domain.Models.Usuario", "User")
-                        .WithOne("SexoUsuario")
-                        .HasForeignKey("TesteEzconet.Domain.Models.Sexo", "SexoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TesteEzconet.Domain.Models.Usuario", b =>
                 {
-                    b.Navigation("SexoUsuario");
+                    b.HasOne("TesteEzconet.Domain.Models.Sexo", "Sexos")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("SexoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sexos");
+                });
+
+            modelBuilder.Entity("TesteEzconet.Domain.Models.Sexo", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

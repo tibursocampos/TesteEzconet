@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TesteEzconet.Domain\TesteEzconet.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
