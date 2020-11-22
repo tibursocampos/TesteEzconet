@@ -30,10 +30,9 @@ namespace TesteEzconet.Controllers
 
         // GET: api/Usuarios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuarioPorId(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
-
             if (usuario == null)
             {
                 return NotFound();
@@ -42,8 +41,8 @@ namespace TesteEzconet.Controllers
             return usuario;
         }
 
-        // GET: api/Usuarios/paulo
-        [HttpGet("{nome}")]
+        // GET: api/Usuarios/nome
+        [HttpGet("nome")]
         public List<Usuario> GetUsuarioNome(string nome)
         {
             var usuario =  _context.Usuarios.Where(n =>
@@ -58,16 +57,16 @@ namespace TesteEzconet.Controllers
         }
 
         // GET: api/Usuarios/ativo
-        [HttpGet("{ativo}")]
-        public List<Usuario> GetUsuarioAtivo(bool ativo)
+        [HttpGet("ativo")]
+        public IQueryable<Usuario> GetUsuarioAtivo()
         {
-            var usuario = _context.Usuarios.Where(x => x.Ativo == true).ToList();
+            var usuario = _context.Usuarios.Where(x => x.Ativo == true);
 
 
-            if (usuario == null)
-            {
-                //return NotFound();
-            }
+            //if (usuario == null)
+            //{
+            //    return NotFound();
+            //}
 
             return usuario;
         }
