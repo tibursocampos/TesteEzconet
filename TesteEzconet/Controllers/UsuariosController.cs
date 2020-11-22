@@ -42,18 +42,17 @@ namespace TesteEzconet.Controllers
         }
 
         // GET: api/Usuarios/nome
-        [HttpGet("nome")]
-        public List<Usuario> GetUsuarioNome(string nome)
+        [HttpGet("busca")]
+        public async Task<IEnumerable<Usuario>> GetUsuarioNome(string nome)
         {
-            var usuario =  _context.Usuarios.Where(n =>
-            EF.Functions.Like(n.Nome, "%" + nome + "%")).ToList();
+            IQueryable<Usuario> consulta = _context.Usuarios;
 
-            if (usuario == null)
+            if (!string.IsNullOrEmpty(nome))
             {
-                //return NotFound();
+                consulta = consulta.Where(e => e.Nome.Contains(nome));
             }
 
-            return usuario;
+            return await consulta.ToListAsync();
         }
 
         // GET: api/Usuarios/ativo
