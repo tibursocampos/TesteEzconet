@@ -10,7 +10,7 @@ using TesteEzconet.Persistence;
 
 namespace TesteEzconet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/TesteEzconet/Usuarios")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
@@ -57,15 +57,15 @@ namespace TesteEzconet.Controllers
 
         // GET: api/Usuarios/ativo
         [HttpGet("ativo")]
-        public IQueryable<Usuario> GetUsuarioAtivo()
+        public ActionResult<Usuario[]> GetUsuarioAtivo()
         {
-            var usuario = _context.Usuarios.Where(x => x.Ativo == true);
+            var usuario = _context.Usuarios.Where(x => x.Ativo == true).ToArray();
 
 
-            //if (usuario == null)
-            //{
-            //    return NotFound();
-            //}
+            if (usuario == null)
+            {
+                return NotFound();
+            }
 
             return usuario;
         }
@@ -111,7 +111,7 @@ namespace TesteEzconet.Controllers
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.UsuarioId }, usuario);
+            return new OkObjectResult(usuario);
         }
 
         // DELETE: api/Usuarios/5
