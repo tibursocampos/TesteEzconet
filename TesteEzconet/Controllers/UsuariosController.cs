@@ -43,7 +43,7 @@ namespace TesteEzconet.Controllers
 
         // GET: api/Usuarios/nome
         [HttpGet("busca")]
-        public async Task<IEnumerable<Usuario>> GetUsuarioNome(string nome)
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarioNome(string nome)
         {
             IQueryable<Usuario> consulta = _context.Usuarios;
 
@@ -57,9 +57,9 @@ namespace TesteEzconet.Controllers
 
         // GET: api/Usuarios/ativo
         [HttpGet("ativo")]
-        public ActionResult<Usuario[]> GetUsuarioAtivo()
+        public ActionResult<IEnumerable<Usuario>> GetUsuarioAtivo()
         {
-            var usuario = _context.Usuarios.Where(x => x.Ativo == true).ToArray();
+            var usuario = _context.Usuarios.Where(x => x.Ativo == true).ToList();
 
 
             if (usuario == null)
