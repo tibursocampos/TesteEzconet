@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteEzconet", "TesteEzconet\TesteEzconet.csproj", "{C6A88DC5-2E78-4FFD-B4D1-F19823E05CC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteEzconet", "TesteEzconet\TesteEzconet.csproj", "{C6A88DC5-2E78-4FFD-B4D1-F19823E05CC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteEzconet.Domain", "TesteEzconet.Domain\TesteEzconet.Domain.csproj", "{3F5D32E4-3069-4FCE-BD14-161B6BF51CE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteEzconet.Domain", "TesteEzconet.Domain\TesteEzconet.Domain.csproj", "{3F5D32E4-3069-4FCE-BD14-161B6BF51CE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteEzconet.Persistence", "TesteEzconet.Persistence\TesteEzconet.Persistence.csproj", "{BFBD5EDD-56CD-4DB8-94F0-7EBAF082CD4D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteEzconet.Service", "TesteEzconet.Service\TesteEzconet.Service.csproj", "{AE4B8532-239D-44AA-9BBE-6863131C10EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteEzconet.Persistence", "TesteEzconet.Persistence\TesteEzconet.Persistence.csproj", "{BFBD5EDD-56CD-4DB8-94F0-7EBAF082CD4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{BFBD5EDD-56CD-4DB8-94F0-7EBAF082CD4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFBD5EDD-56CD-4DB8-94F0-7EBAF082CD4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFBD5EDD-56CD-4DB8-94F0-7EBAF082CD4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE4B8532-239D-44AA-9BBE-6863131C10EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE4B8532-239D-44AA-9BBE-6863131C10EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE4B8532-239D-44AA-9BBE-6863131C10EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE4B8532-239D-44AA-9BBE-6863131C10EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
