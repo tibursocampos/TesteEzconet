@@ -173,13 +173,13 @@ namespace TesteEzconet.Controllers
                 int tamanhoNome = usuario.Nome.Length;
                 if (tamanhoNome < 3 || tamanhoNome > 200)
                 {
-                    return BadRequest();
+                    return BadRequest(new { mensagem = "Campo nome deve ter entre 3 e 200 caracteres !!!" });
                 }
 
                 if (usuario.Nome == null || usuario.Email == null || usuario.DataNascimento == null ||
                     usuario.Nome == "" || usuario.Email == "")
                 {
-                    return BadRequest(new { mensagem = "Usuário não encontrado !!!" });
+                    return BadRequest(new { mensagem = "Campos obrigatórios não preenchidos !!!" });
                 }
 
                 await _context.SaveChangesAsync(); 
@@ -201,7 +201,7 @@ namespace TesteEzconet.Controllers
             _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
-            return usuario;
+            return Ok(new { mensagem = "Usuário deletado com sucesso !!!" });
         }
 
         private bool UsuarioExists(int id)
