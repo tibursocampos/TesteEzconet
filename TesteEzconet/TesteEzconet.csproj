@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TesteEzconet.Persistence\TesteEzconet.Persistence.csproj" />
-    <ProjectReference Include="..\TesteEzconet.Service\TesteEzconet.Service.csproj" />
   </ItemGroup>
 
 
