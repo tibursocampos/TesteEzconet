@@ -10,7 +10,7 @@ using TesteEzconet.Persistence;
 
 namespace TesteEzconet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/TesteEzconet/Usuarios")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
@@ -20,80 +20,89 @@ namespace TesteEzconet.Controllers
         {
             _context = context;
         }
-
-        // GET: api/Usuarios
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
             return await _context.Usuarios.ToListAsync();
         }
 
-        // GET: api/Usuarios/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuarioPorId(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
-
             if (usuario == null)
             {
-                return NotFound();
+                return NotFound(new { mensagem = "Usuário não encontrado !!!" });
             }
 
             return usuario;
         }
 
-        // GET: api/Usuarios/paulo
-        [HttpGet("{nome}")]
-        public List<Usuario> GetUsuarioNome(string nome)
+        [HttpGet("busca")]
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarioNome(string nome)
         {
-            var usuario =  _context.Usuarios.Where(n =>
-            EF.Functions.Like(n.Nome, "%" + nome + "%")).ToList();
+            IQueryable<Usuario> consulta = _context.Usuarios;
 
-            if (usuario == null)
+            if (!string.IsNullOrEmpty(nome))
             {
-                //return NotFound();
+                consulta = consulta.Where(e => e.Nome.Contains(nome));
             }
 
-            return usuario;
+            if (consulta == null)
+            {
+                return NotFound(new { mensagem = "Usuário não encontrado !!!" });
+            }
+
+            return await consulta.ToListAsync();
         }
 
-        // GET: api/Usuarios/ativo
-        [HttpGet("{ativo}")]
-        public List<Usuario> GetUsuarioAtivo(bool ativo)
+        [HttpGet("ativo")]
+        public ActionResult<IEnumerable<Usuario>> GetUsuarioAtivo()
         {
             var usuario = _context.Usuarios.Where(x => x.Ativo == true).ToList();
 
 
             if (usuario == null)
             {
-                //return NotFound();
+                return NotFound(new { mensagem = "Usuário não encontrado !!!" });
             }
 
             return usuario;
         }
-
-        // PUT: api/Usuarios/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+       
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
             if (id != usuario.UsuarioId)
             {
-                return BadRequest();
+                return BadRequest(new { mensagem = "Usuário não encontrado !!!" });
             }
 
             _context.Entry(usuario).State = EntityState.Modified;
 
+            int tamanhoNome = usuario.Nome.Length;
+            if (tamanhoNome < 3 || tamanhoNome > 200)
+            {
+                return BadRequest(new { mensagem = "Campo nome deve ter entre 3 e 200 caracteres !!!" });
+            }
+
+            if (usuario.Nome == null || usuario.Email == null || usuario.DataNascimento == null ||
+                usuario.Nome == "" || usuario.Email == "")
+            {
+                return BadRequest(new { mensagem = "Campos obrigatórios não preenchidos !!!" });
+            }
+
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();                
+
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UsuarioExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { mensagem = "Usuário não encontrado !!!" });
                 }
                 else
                 {
@@ -101,35 +110,98 @@ namespace TesteEzconet.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { mensagem = "Usuário alterado com sucesso !!!" });
         }
 
-        // POST: api/Usuarios
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}/ativar")]
+        public async Task<IActionResult> PutUsuarioAtivarDesativar(int id, Usuario usuario)
+        {
+            if (id != usuario.UsuarioId)
+            {
+                return BadRequest(new { mensagem = "Usuário não encontrado !!!" });
+            }
+
+            var estadoAtual = usuario.Ativo;
+            if (estadoAtual)
+            {
+                estadoAtual = false;
+            } else
+            {
+                estadoAtual = true;
+            }
+            usuario.Ativo = estadoAtual;
+
+            int tamanhoNome = usuario.Nome.Length;
+            if (tamanhoNome < 3 || tamanhoNome > 200)
+            {
+                return BadRequest(new { mensagem = "Campo nome deve ter entre 3 e 200 caracteres !!!" });
+            }
+
+            if (usuario.Nome == null || usuario.Email == null || usuario.DataNascimento == null ||
+                usuario.Nome == "" || usuario.Email == "")
+            {
+                return BadRequest(new { mensagem = "Campos obrigatórios não preenchidos !!!" });
+            }
+
+            _context.Entry(usuario).State = EntityState.Modified;
+
+            try
+            {
+               await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(id))
+                {
+                    return NotFound(new { mensagem = "Usuário não encontrado !!!" });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(new { mensagem = "Usuário alterado com sucesso !!!" });
+        }
+                
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
-        {
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
+        { 
+            {
+                _context.Usuarios.Add(usuario);
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.UsuarioId }, usuario);
+                int tamanhoNome = usuario.Nome.Length;
+                if (tamanhoNome < 3 || tamanhoNome > 200)
+                {
+                    return BadRequest(new { mensagem = "Campo nome deve ter entre 3 e 200 caracteres !!!" });
+                }
+
+                if (usuario.Nome == null || usuario.Email == null || usuario.DataNascimento == null ||
+                    usuario.Nome == "" || usuario.Email == "")
+                {
+                    return BadRequest(new { mensagem = "Campos obrigatórios não preenchidos !!!" });
+                }
+
+                await _context.SaveChangesAsync(); 
+            }
+
+
+            return Ok(new { mensagem = "Usuário criado com sucesso !!!" });
         }
 
-        // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
-                return NotFound();
+                return NotFound(new { mensagem = "Usuário não encontrado !!!" });
             }
 
             _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
-            return usuario;
+            return Ok(new { mensagem = "Usuário deletado com sucesso !!!" });
         }
 
         private bool UsuarioExists(int id)
