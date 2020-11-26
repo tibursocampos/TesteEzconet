@@ -186,7 +186,7 @@ namespace TesteEzconet.Controllers
             }
 
 
-            return Ok(new { mensagem = "Usuário alterado com sucesso !!!" });
+            return Ok(new { mensagem = "Usuário criado com sucesso !!!" });
         }
 
         [HttpDelete("{id}")]
